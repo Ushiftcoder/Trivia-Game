@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trivia Game</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<header>
+		<h1>Trivia Game</h1>
+		<p>Select a category to play:</p>
+		<ul>
+			<li><a href="#">History</a></li>
+			<li><a href="#">Science</a></li>
+			<li><a href="#">Music</a></li>
+			<li><a href="#">Movies</a></li>
+		</ul>
+	</header>
+	<main>
+		<div class="game">
+			<h2>Question 1</h2>
+			<p>Question text goes here.</p>
+			<form>
+				<label>
+					<input type="radio" name="answer" value="a">
+					<span>Answer A</span>
+				</label>
+				<label>
+					<input type="radio" name="answer" value="b">
+					<span>Answer B</span>
+				</label>
+				<label>
+					<input type="radio" name="answer" value="c">
+					<span>Answer C</span>
+				</label>
+				<label>
+					<input type="radio" name="answer" value="d">
+					<span>Answer D</span>
+				</label>
+				<button type="submit">Next</button>
+			</form>
+		</div>
+	</main>
+	<footer>
+		<p>Score: <span id="score">0</span></p>
+		<p>Time Left: <span id="timer">30</span> seconds</p>
+	</footer>
+	<script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+body {
+	font-family: Arial, sans-serif;
+}
+
+header, main, footer {
+	padding: 20px;
+}
+
+header {
+	background-color: #f2f2f2;
+	text-align: center;
+}
+
+header h1 {
+	margin-top: 0;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+li a {
+	display: block;
+	padding: 5px;
+	background-color: #333;
+	color: #fff;
+	text-decoration: none;
+}
+
+li a:hover {
+	background-color: #555;
+}
+
+.game {
+	border: 1px solid #ccc;
+	padding: 20px;
+	margin-bottom: 20px;
+}
+
+.game h2 {
+	margin-top: 0;
+}
+
+label {
+	display: block;
+	margin-bottom: 10px;
+}
+
+label span {
+	margin-left: 10px;
+}
+
+button[type="submit"] {
+	display: block;
+	margin-top: 10px;
+	padding: 5px 10px;
+	background-color: #333;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+}
+
+button[type="submit"]:hover {
+	background-color: #555;
+}
+
+footer {
+	background-color: #f2f2f2;
+	text-align: center;
+}
+
+footer p {
+	margin-bottom: 10px;
+}
+
+footer #score {
+	font-weight: bold;
+}
+
+
+
+// Global variables
+const categories = [
+	{
+		name: 'History',
+		questions: [
+			{
+				question: 'Who was the first president of the United States?',
+				answers: [
+					{ text: 'George Washington', correct: true },
+					{ text: 'John Adams', correct: false },
+					{ text: 'Thomas Jefferson', correct: false },
+					{ text: 'Abraham Lincoln', correct: false }
+				]
+			},
+			{
+				question: 'Who invented the telephone?',
+				answers: [
+					{ text: 'Alexander Graham Bell', correct: true },
+					{ text: 'Thomas Edison', correct: false },
+					{ text: 'Nikola Tesla', correct: false },
+					{ text: 'Benjamin Franklin', correct: false }
+				]
+			}
+		]
+	},
+	{
+		name: 'Science',
+		questions: [
+			{
+				question: 'What is the symbol for sodium on the periodic table?',
+				answers: [
+					{ text: 'S', correct: false },
+					{ text: 'Na', correct: true },
+					{ text: 'Mg', correct: false },
+					{ text: 'Cl', correct: false }
+				]
+			},
+			{
+				question: 'What is the largest organ in the human body?',
+				answers: [
+					{ text: 'Heart', correct: false },
+					{ text: 'Liver', correct: false },
+					{ text: 'Skin', correct: true },
+					{ text: 'Lungs', correct: false }
+				]
+			}
+		]
+	},
+	{
+		name: 'Music',
+		questions: [
+			{
+				question: 'Who is known as the "King of Pop"?',
+				answers: [
+					{ text: 'Michael Jackson', correct: true },
+					{ text: 'Elvis Presley', correct: false },
+					{ text: 'Prince', correct: false },
+					{ text: 'David Bowie', correct: false }
+				]
+			},
+			{
+				question: 'What instrument did Jimi Hendrix famously play?',
+				answers: [
+					{ text: 'Guitar', correct: true },
+					{ text: 'Drums', correct: false },
+					{ text: 'Bass', correct: false },
+					{ text: 'Piano', correct: false }
+				]
+			}
+		]
+	},
+	{
+		name: 'Movies',
+		questions: [
+			{
+				question: 'Who directed the movie "Jaws"?',
+				answers: [
+					{ text: 'Steven Spielberg', correct: true },
+					{ text: 'George Lucas', correct: false },
+					{ text: 'Martin Scorsese', correct: false },
+					{ text: 'Quentin Tarantino', correct: false }
+				]
+			},
+			{
+				question: 'Which movie won the Academy Award for Best Picture in 2020?',
+				answers: [
+					{ text: '1917', correct: false },
+					{ text: 'Joker', correct: false },
+					{ text: 'Once Upon a Time in Hollywood', correct: false },
+					{ text: 'Parasite', correct: true }
+				]
+			}
+		]
+	}
+];
+
+let currentQuestion = null;
+let score = 0;
+
+// Function to start the game
+function startGame(categoryIndex) {
+	currentCategory = categories[categoryIndex];
+	currentQuestion = 0;
+	score = 0;
+	showQuestion();
+}
+
+// Function to display the current question
+function showQuestion() {
+	const questionContainer = document.getElementById('question-container');
+	const questionElement = document.getElementById('question');
+	const answerButtons = document.getElementById('answer-buttons');
+
+	questionElement.innerText = currentCategory.questions[currentQuestion].question;
+
+	while (answerButtons.firstChild) {
+		answerButtons.removeChild(answerButtons.firstChild);
+	}
+
+	currentCategory.questions[currentQuestion].answers.forEach(answer => {
+		const button = document.createElement('button');
+		button.innerText = answer.text;
+		button.classList.add('btn');
+		if (answer.correct) {
+			button.dataset.correct = answer.correct;
+		}
+		button.addEventListener('click', selectAnswer);
+		answerButtons.appendChild(button);
+	});
+
+	questionContainer.classList.remove('hide');
+}
+
+// Function to select an answer
+function selectAnswer(e) {
+	const selectedButton = e.target;
+	const correct = selectedButton.dataset.correct;
+
+	if (correct) {
+		score++;
+	}
+
+	if (currentQuestion < currentCategory.questions.length - 1) {
+		currentQuestion++;
+		showQuestion();
+	} else {
+		endGame();
+	}
+}
+
+// Function to end the game
+function endGame() {
+	const questionContainer = document.getElementById('question-container');
+	const scoreContainer = document.getElementById('score-container');
+
+	questionContainer.classList.add('hide');
+	scoreContainer.innerText = `You scored ${score} out of ${currentCategory.questions.length} questions.`;
+	scoreContainer.classList.remove('hide');
+}
+
+// Add event listeners to category buttons
+const categoryButtons = document.querySelectorAll('.category-btn');
+categoryButtons.forEach(button => {
+	button.addEventListener('click', () => {
+		startGame(button.dataset.category);
+	});
+});
