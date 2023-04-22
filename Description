@@ -1,0 +1,13 @@
+Project Name: "Trivia Game"
+Project Description:
+The Trivia Game is a fun and interactive game that challenges players to answer a set of questions in a specific category within a limited time frame. The game will have multiple categories to choose from such as history, science, music, movies, and so on
+
+Features:
+A landing page where the player can select a category of their choice to play the game.
+The game will have a countdown timer and a score tracker.
+Once the player selects a category, they will be presented with a set of questions related to that category.
+The player will have a limited amount of time to answer each question.
+After answering a question, the player will receive feedback on whether their answer was correct or incorrect.
+If the player answers all questions within the time limit, their score will be displayed on the screen.
+
+Technologies Used: HTML, CSS, JavaScript
